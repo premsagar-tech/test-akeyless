@@ -122,9 +122,8 @@ Centralized audit: All access requests are logged in Akeyless with identity info
 Least privilege enforcement: Fine-grained Access Roles ensure workloads only access needed secrets.
 
 ## Diagram: Kubernetes Auth Method Flow
-## Diagram: Kubernetes Auth Method Flow
 
-```
+```mermaid
 flowchart TB
     subgraph AKS["AKS Cluster"]
         Pod["Pod with ServiceAccount<br/>(akeyless-auth-sa)"]
@@ -157,6 +156,5 @@ flowchart TB
     style AuthMethod fill:#ffe0b2,stroke:#ef6c00
     style AccessRole fill:#ffe0b2,stroke:#ef6c00
     style Vault fill:#ffe0b2,stroke:#ef6c00
-```
 ```
 
