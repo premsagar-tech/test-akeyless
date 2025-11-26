@@ -4,7 +4,7 @@
 
 Authenticating AKS (External Secrets Operator) to Akeyless ensures that only authorized workloads can retrieve sensitive secrets securely. This prevents secret leakage and enforces security policies centrally, thus protecting your infrastructure and applications.
 
-Without proper authentication:
+# Without proper authentication:
 
 Unauthorized pods could access secrets they shouldn't have permission to read.
 
@@ -16,17 +16,20 @@ Compliance requirements for access control and least-privilege cannot be met.
 
 Akeyless supports several authentication options for Kubernetes clusters to interact securely:
 
-API Key: Static secret-based method, simpler but less secure, often used for CI/CD automation scenarios.
+* API Key: 
+Static secret-based method, simpler but less secure, often used for CI/CD automation scenarios.
 
-Kubernetes Auth: Uses Kubernetes service account tokens tied to the cluster identity, recommended for production use for its dynamic, secure nature.
+* Kubernetes Auth: 
+Uses Kubernetes service account tokens tied to the cluster identity, recommended for production use for its dynamic, secure nature.
 
-Cloud Identity Providers: Integrations with AWS IAM, Azure AD, and Google Cloud IAM for cloud-connected authentications.
+* Cloud Identity Providers: 
+Integrations with AWS IAM, Azure AD, and Google Cloud IAM for cloud-connected authentications.
 
 For AKS + ESO integration, Kubernetes Auth is the recommended approach because it eliminates static credentials and leverages Kubernetes-native identity.
 
 ## Kubernetes Auth Method Overview
 
-Kubernetes Auth relies on Kubernetes ServiceAccount JWT tokens to prove the identity of the caller:
+* Kubernetes Auth relies on Kubernetes ServiceAccount JWT tokens to prove the identity of the caller:
 
 AKS automatically issues a JWT token to a pod's service account when the pod starts.
 
@@ -34,7 +37,7 @@ Akeyless is configured with the AKS cluster's API endpoint and the cluster's CA 
 
 When a secret fetch request arrives, Akeyless validates the token directly against the AKS API server's TokenReview endpoint and verifies it belongs to an authorized service account.
 
-This token-based authentication offers:
+* This token-based authentication offers:
 
 Dynamic, secure access without static credentials stored in configurations.
 
@@ -53,7 +56,7 @@ Improved compliance and reduced security risk through centralized policy enforce
 
 ## Setting up Kubernetes Auth Method in Akeyless
 
-To configure Kubernetes Auth in Akeyless, you need:
+* To configure Kubernetes Auth in Akeyless, you need:
 
 AKS API Server URL: The endpoint where Akeyless can reach your cluster's API server.
 
@@ -61,7 +64,7 @@ Cluster CA Certificate: The certificate authority data for TLS trust between Ake
 
 TokenReview Configuration: Akeyless uses the Kubernetes TokenReview API to validate tokens.
 
-Steps in Akeyless:
+* Steps in Akeyless:
 
 Navigate to Authentication Methods in the Akeyless console.
 
@@ -75,7 +78,7 @@ Save and note the Auth Method Access ID for later use.
 
 ## Defining Access Roles in Akeyless
 
-Access Roles map Kubernetes identities (ServiceAccounts, namespaces) to permitted secret paths:
+* Access Roles map Kubernetes identities (ServiceAccounts, namespaces) to permitted secret paths:
 
 Create an Access Role in Akeyless.
 
@@ -85,17 +88,17 @@ Define rules specifying which ServiceAccount or namespace can access which secre
 
 Grant appropriate permissions (read, list) on those paths.
 
-Example rule:
+* Example rule:
 
-ServiceAccount: akeyless-auth-sa in namespace akeyless-auth
+* ServiceAccount: akeyless-auth-sa in namespace akeyless-auth
 
-Allowed paths: /demo/app/*
+* Allowed paths: /demo/app/*
 
-Permissions: read, list
+* Permissions: read, list
 
 ## How External Secrets Operator Uses Kubernetes Auth
 
-Once configured:
+* Once configured:
 
 ESO is deployed in AKS with a dedicated ServiceAccount (e.g., akeyless-auth-sa).
 
@@ -111,15 +114,20 @@ This entire flow happens automatically - no manual token management required.
 
 Kubernetes Auth provides multiple security advantages:
 
-No static secrets: Eliminates the need to store API keys or passwords in cluster configurations.
+* No static secrets: 
+Eliminates the need to store API keys or passwords in cluster configurations.
 
-Kubernetes-native identity: Leverages existing RBAC and ServiceAccount mechanisms.
+* Kubernetes-native identity: 
+Leverages existing RBAC and ServiceAccount mechanisms.
 
-Automatic token rotation: Kubernetes handles token lifecycle and rotation.
+* Automatic token rotation: 
+Kubernetes handles token lifecycle and rotation.
 
-Centralized audit: All access requests are logged in Akeyless with identity information.
+* Centralized audit: 
+All access requests are logged in Akeyless with identity information.
 
-Least privilege enforcement: Fine-grained Access Roles ensure workloads only access needed secrets.
+* Least privilege enforcement: 
+Fine-grained Access Roles ensure workloads only access needed secrets.
 
 ## Diagram: Kubernetes Auth Method Flow
 
